@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -15,8 +16,8 @@ int main(void)
         printf("Enter the number of values to be generated in the Fibonacci Sequence:\t");
         scanf("%d", &i);
 
-        pid_t pid = fork();
-        if (pid == 0)
+        pid_t pid;
+        if ((pid = fork()) == 0)
         {
                 printf("\nChild process is generating the Fibonacci series.\n");
                 printf("0\t%llu\t", n);
@@ -29,12 +30,16 @@ int main(void)
                         if (i == 0)
                                 printf("\nChild ends\n");
                 }
+                exit(0);
         }
+
+        else if (pid < 0)
+                fprintf(stderr, "\nThe child process wasn't successfully created.\n");
+
         else
         {
-                printf("Parent is waiting for child to complete...\n");
                 waitpid(pid, NULL, 0);
-                printf("Parent ends\n");
+                printf("Parent has completed execution.\n");
         }
 
         return 0;

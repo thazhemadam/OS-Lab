@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -18,6 +19,7 @@ int main(void)
                 for (int i = 0; i < array_size; i++)
                         sum += array[i];
                 printf("\nThe child process has computed the sum to be: %d \n", sum);
+                exit(0);
         }
 
         else if (pid < 0)
@@ -28,6 +30,7 @@ int main(void)
                 for (int i = 0; i < array_size; i++)
                         product *= array[i];
                 printf("\nThe parent process has computed the product to be: %d \n", product);
+                waitpid(pid, NULL, 0);
         }
         
         return 0;
